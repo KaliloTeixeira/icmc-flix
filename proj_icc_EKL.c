@@ -2,11 +2,10 @@
  *
 */
 
+/*Test edit*/
 
-
-
-#include <stdio.h> 
-#include <stdlib.h> 
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h> // equivale ao windows.h
 
@@ -24,78 +23,81 @@ system('reset') coresponde ao system('cls')
 
 */
 
-
-
 // Declaração dos Structs
-struct filme{
+struct filme
+{
     int numCatalogo;
     char titulo[60];
     char genero[20];
     int ano;
 };
 
-struct usuario{
+struct usuario
+{
     char nome[30];
     char cpf[12];
     int alugados;
     int atrasos;
 };
 
-
 // Prototipo das Funções
-    
-    // Funcoes de Menu
+
+// Funcoes de Menu
 void menuPrincipal();
 void menuUsuario();
 void menuFilme();
 void menuLocacao();
 
-    // Funcoes Relacionadas aos Usuarios
-int inserirUsuario(); 
-void editarUsuario(); 
+// Funcoes Relacionadas aos Usuarios
+int inserirUsuario();
+void editarUsuario();
 void excluirUsuario();
-void listarUsuarios(); 
+void listarUsuarios();
 
-    // Funcoes Relacionadas aos Filmes
-int inserirFilme(); 
-void editarFilme(); 
+// Funcoes Relacionadas aos Filmes
+int inserirFilme();
+void editarFilme();
 void excluirFilme();
-void listarFilmes(); 
+void listarFilmes();
 
-    // Funcoes Relacionadas aos Filmes
-void listarFilmesDisponiveis(); 
-void listarFilmesLocados(); 
+// Funcoes Relacionadas aos Filmes
+void listarFilmesDisponiveis();
+void listarFilmesLocados();
 void locarFilme();
-void devolverFilme(); 
-
+void devolverFilme();
 
 // Main
-void main(){
+void main()
+{
     struct filme filmes[max];
     struct usuario usuarios[max];
-    int opcaoMenu=1, i, filmesCadastrados=0, inseriu, numCatalogo, usuariosCadastrados=0, novoUsuario;
+    int opcaoMenu = 1, i, filmesCadastrados = 0, inseriu, numCatalogo, usuariosCadastrados = 0, novoUsuario;
     char genero[20], titulo[20], cpfUsuario[12];
 
     // Inicia Banco de Filmes e de Usuários com todas as posições 0 ou Nao Cadastrado
-    for ( i = 0; i < max; i++){
-        filmes[i].numCatalogo=0;
-        filmes[i].ano=0;
+    for (i = 0; i < max; i++)
+    {
+        filmes[i].numCatalogo = 0;
+        filmes[i].ano = 0;
         strcpy(filmes[i].titulo, "Nao Cadastrado!");
         strcpy(filmes[i].genero, "Nao Cadastrado!");
-    } 
+    }
 
-    for ( i = 0; i < max; i++){
+    for (i = 0; i < max; i++)
+    {
         strcpy(usuarios[i].nome, "");
         strcpy(usuarios[i].cpf, "");
         usuarios[i].alugados = 0;
         usuarios[i].atrasos = 0;
-    }  // A intenção é substituir este método por um gerenciamento em .sql ou .txt
+    } // A intenção é substituir este método por um gerenciamento em .sql ou .txt
 
-    while (opcaoMenu != 0){
+    while (opcaoMenu != 0)
+    {
         menuPrincipal();
         scanf(" %d", &opcaoMenu);
 
-        switch (opcaoMenu){
+        switch (opcaoMenu)
+        {
 
         case 0:
             printf("Saindo...");
@@ -105,38 +107,44 @@ void main(){
             menuUsuario();
             scanf(" %d", &opcaoMenu);
 
-            switch (opcaoMenu){
+            switch (opcaoMenu)
+            {
             case 0:
-                opcaoMenu=10;
+                opcaoMenu = 10;
                 break;
 
             case 1: // Insere um novo usuário
                 novoUsuario = inserirUsuario(usuarios, usuariosCadastrados);
-                    if(novoUsuario){
-                        printf("\nUsuario cadastrado com sucesso!\nDigite qualquer tecla para voltar ao inicio.");
-                        usuariosCadastrados++; 
-		    }
-		    getchar();
-            break;
-            
-            case 2: // Edita um usuario a partir do cpf
-            if(!(!usuariosCadastrados)){
-                printf("\n----------------------------------");
-                printf("\n\nDigite o CPF do usuario que deseja EDITAR: ");
-                gets(cpfUsuario);
-                while (getchar() != '\n');
-                editarUsuario(usuarios, cpfUsuario);
-            }
+                if (novoUsuario)
+                {
+                    printf("\nUsuario cadastrado com sucesso!\nDigite qualquer tecla para voltar ao inicio.");
+                    usuariosCadastrados++;
+                }
                 getchar();
                 break;
-            
+
+            case 2: // Edita um usuario a partir do cpf
+                if (!(!usuariosCadastrados))
+                {
+                    printf("\n----------------------------------");
+                    printf("\n\nDigite o CPF do usuario que deseja EDITAR: ");
+                    gets(cpfUsuario);
+                    while (getchar() != '\n')
+                        ;
+                    editarUsuario(usuarios, cpfUsuario);
+                }
+                getchar();
+                break;
+
             case 3: // Exclui usuarios (verificar se o cara tem dívida antes...)
-                if(!(!usuariosCadastrados)){
+                if (!(!usuariosCadastrados))
+                {
                     printf("\n----------------------------------");
                     printf("\n\nDigite o CPF que deseja EXCLUIR: ");
-		            while (getchar() != '\n');
+                    while (getchar() != '\n')
+                        ;
                     gets(cpfUsuario);
-		            excluirUsuario(usuarios, cpfUsuario);
+                    excluirUsuario(usuarios, cpfUsuario);
                 }
                 getchar();
                 break;
@@ -145,7 +153,7 @@ void main(){
                 listarUsuarios(usuarios, usuariosCadastrados);
                 getchar();
                 break;
-          
+
             default:
                 printf("\nOpcao Invalida! Tente Novamente!");
                 getchar();
@@ -153,46 +161,50 @@ void main(){
             }
             break;
 
-	case 2:
-        menuFilme();
-        scanf(" %d", &opcaoMenu);
-        switch (opcaoMenu){
+        case 2:
+            menuFilme();
+            scanf(" %d", &opcaoMenu);
+            switch (opcaoMenu)
+            {
             case 0:
-                opcaoMenu=10;
+                opcaoMenu = 10;
                 break;
 
             case 1: // Insere um filme
                 inseriu = inserirFilme(filmes, filmesCadastrados);
-                if(inseriu){
+                if (inseriu)
+                {
                     printf("\nFilme inserido com sucesso!");
                     filmesCadastrados++;
                     getchar();
-		        }   
+                }
                 break;
-            
+
             case 2: // Edita filme por título
                 listarFilmes(filmes, filmesCadastrados);
-                if(!(!filmesCadastrados)){
+                if (!(!filmesCadastrados))
+                {
                     printf("\n----------------------------------");
                     printf("\n\nDigite o Titulo do filme que deseja EDITAR: ");
-		    fflush(stdin);
-		    while (getchar() != '\n');
+                    fflush(stdin);
+                    while (getchar() != '\n')
+                        ;
                     gets(titulo);
-		    
+
                     editarFilme(filmes, titulo);
                 }
                 getchar();
                 break;
 
-            
             case 3: // Exclui filme da biblioteca baseado no número de registro
                 listarFilmes(filmes, filmesCadastrados);
-                if(!(!filmesCadastrados)){
+                if (!(!filmesCadastrados))
+                {
                     printf("\n----------------------------------");
                     printf("\n\nDigite o Numero do filme que deseja EXCLUIR: ");
                     scanf(" %d", &numCatalogo);
                     excluirFilme(filmes, numCatalogo);
-		            filmesCadastrados--;
+                    filmesCadastrados--;
                 }
                 getchar();
                 break;
@@ -201,18 +213,17 @@ void main(){
                 listarFilmes(filmes, filmesCadastrados);
                 getchar();
                 break;
-            
+
             default:
-                printf("\nOpcao Invalida! Tente Novamente!");   
+                printf("\nOpcao Invalida! Tente Novamente!");
                 getchar();
                 break;
             }
             break;
-        
-//			COMING SOON
 
+            //			COMING SOON
 
-/*        case 3:
+            /*        case 3:
             menuLocacao();
             scanf(" %d", &opcaoMenu);
             switch (opcaoMenu){
@@ -242,30 +253,31 @@ void main(){
                 break;
             }
             break;
-*/        
+*/
         default:
             printf("\nOpcao Invalida! Tente Novamente!");
             getchar();
             break;
-	    
-        } 
-    } 
+        }
+    }
 }
 
 // Corpo das Funções
 
-    // Funcoes de Menu
-void menuPrincipal(){
+// Funcoes de Menu
+void menuPrincipal()
+{
     system("cls");
     printf("----------- ICMC Flix -----------\n");
     printf("\n1 - Usuarios");
     printf("\n2 - Filmes");
-//    printf("\n3 - Locacao");
+    //    printf("\n3 - Locacao");
     printf("\n0 - Sair");
     printf("\n\nDigite a opcao desejada: ");
 }
 
-void menuUsuario(){
+void menuUsuario()
+{
     system("cls");
     printf("----------- ICMC Flix -----------\n");
     printf("\n1 - Cadastrar Novo Usuario");
@@ -276,7 +288,8 @@ void menuUsuario(){
     printf("\n\nDigite a opcao desejada: ");
 }
 
-void menuFilme(){
+void menuFilme()
+{
     system("cls");
     printf("----------- ICMC Flix -----------\n");
     printf("\n1 - Cadastrar Novo Filme");
@@ -287,7 +300,8 @@ void menuFilme(){
     printf("\n\nDigite a opcao desejada: ");
 }
 
-void menuLocacao(){  // isto é um easter egg (mentira)
+void menuLocacao()
+{ // isto é um easter egg (mentira)
     system("cls");
     printf("----------- ICMC Flix -----------\n");
     printf("\n1 - Listar Filmes Disponiveis");
@@ -296,19 +310,22 @@ void menuLocacao(){  // isto é um easter egg (mentira)
     printf("\n4 - Devolver Filme");
     printf("\n0 - Voltar");
     printf("\n\nDigite a opcao desejada: ");
-
 }
 
-    // Funcoes relacionadas aos Usuarios
-int inserirUsuario(struct usuario *usuarios, int usuariosCadastrados){
-    int novoUsuario = 0 ;
+// Funcoes relacionadas aos Usuarios
+int inserirUsuario(struct usuario *usuarios, int usuariosCadastrados)
+{
+    int novoUsuario = 0;
 
     // usamos a variável que mostra o número de usuários também como 'iterador'
-    for(usuariosCadastrados; usuariosCadastrados < max; usuariosCadastrados++){
-        if(strlen(usuarios[usuariosCadastrados].nome) == 0){
+    for (usuariosCadastrados; usuariosCadastrados < max; usuariosCadastrados++)
+    {
+        if (strlen(usuarios[usuariosCadastrados].nome) == 0)
+        {
             printf("\nNome do usuario: \n");
-	        fflush(stdin);
-	        while (getchar() != '\n');
+            fflush(stdin);
+            while (getchar() != '\n')
+                ;
             gets(usuarios[usuariosCadastrados].nome);
             printf("CPF: ");
             fflush(stdin);
@@ -318,7 +335,8 @@ int inserirUsuario(struct usuario *usuarios, int usuariosCadastrados){
         }
     }
 
-    if(!novoUsuario){
+    if (!novoUsuario)
+    {
         printf("\nOcorreu um erro de alocacao.\nPedimos desculpas pelo incomodo.");
         getchar();
     }
@@ -327,71 +345,90 @@ int inserirUsuario(struct usuario *usuarios, int usuariosCadastrados){
 }
 
 //void editarUsuario(){
-void editarUsuario(struct usuario *usuarios, char cpfUsuario[]){
-    int i, editado=0, encontrado=0;
+void editarUsuario(struct usuario *usuarios, char cpfUsuario[])
+{
+    int i, editado = 0, encontrado = 0;
     char confirma;
 
-    for ( i = 0; i < max; i++)
+    for (i = 0; i < max; i++)
     {
-        if(strcmp(cpfUsuario, usuarios[i].cpf) == 0){
+        if (strcmp(cpfUsuario, usuarios[i].cpf) == 0)
+        {
             printf("\n----------------------------------");
             printf("\nNome: %s\nCPF: %s\nAlugueis pendentes: %s\nAtrasos: %d\n\n",
-            usuarios[i].nome, usuarios[i].cpf, usuarios[i].alugados, usuarios[i].atrasos);
+                   usuarios[i].nome, usuarios[i].cpf, usuarios[i].alugados, usuarios[i].atrasos);
             printf("Este e o cadastro que deseja editar? [s/n]");
             scanf("%c", &confirma);
-            if (confirma == 's'){
+            if (confirma == 's')
+            {
                 encontrado = 1;
                 break;
             }
         }
     }
 
-    if(encontrado == 1){
+    if (encontrado == 1)
+    {
         printf("\nNome: ");
         fflush(stdin);
-        while (getchar() != '\n');
+        while (getchar() != '\n')
+            ;
         gets(usuarios[i].nome);
-        editado=1;
+        editado = 1;
     }
-    if(!encontrado) printf("\nNao foram encontrados cadastros com este cpf!");
+    if (!encontrado)
+        printf("\nNao foram encontrados cadastros com este cpf!");
 
-    if(editado) printf("\nCadastro editado com sucesso!");
-    else printf("\nHouve um erro que nem os programadores entenderam!");
+    if (editado)
+        printf("\nCadastro editado com sucesso!");
+    else
+        printf("\nHouve um erro que nem os programadores entenderam!");
 }
 
-void excluirUsuario(struct usuario *usuarios, char cpfUsuario[]){
-    int i, excluido=0;
+void excluirUsuario(struct usuario *usuarios, char cpfUsuario[])
+{
+    int i, excluido = 0;
 
-    for ( i = 0; i < max; i++)
+    for (i = 0; i < max; i++)
     {
-        if(strcmp(cpfUsuario, usuarios[i].cpf) == 0){
-	    if(!(usuarios[i].alugados) | !(usuarios[i].atrasos)){
-		    printf("Nao e possivel remover cadastros em situacao irregular");
-	    }
-	    else{
-            strcpy(usuarios[i].nome, "");
-            strcpy(usuarios[i].cpf, "");
-            excluido=1;
-	    }
+        if (strcmp(cpfUsuario, usuarios[i].cpf) == 0)
+        {
+            if (!(usuarios[i].alugados) | !(usuarios[i].atrasos))
+            {
+                printf("Nao e possivel remover cadastros em situacao irregular");
+            }
+            else
+            {
+                strcpy(usuarios[i].nome, "");
+                strcpy(usuarios[i].cpf, "");
+                excluido = 1;
+            }
         }
     }
 
-    if(excluido) printf("\nCadastro removido com Sucesso!");
-    else printf("\nUsuario nao encontrado");
+    if (excluido)
+        printf("\nCadastro removido com Sucesso!");
+    else
+        printf("\nUsuario nao encontrado");
 }
 
-void listarUsuarios(struct usuario *usuarios, int usuariosCadastrados){
+void listarUsuarios(struct usuario *usuarios, int usuariosCadastrados)
+{
     int i;
 
-    if(!usuariosCadastrados){
+    if (!usuariosCadastrados)
+    {
         printf("\nNenhum Usuario Cadastrado.");
-    }else{
-        for ( i = 0; i < max; i++)
+    }
+    else
+    {
+        for (i = 0; i < max; i++)
         {
-                if(strlen(usuarios[i].nome) != 0){
-                    printf("\n----------------------------------");
-                    printf("\nNome: %s\nCPF: %s\n",
-                                    usuarios[i].nome, usuarios[i].cpf);
+            if (strlen(usuarios[i].nome) != 0)
+            {
+                printf("\n----------------------------------");
+                printf("\nNome: %s\nCPF: %s\n",
+                       usuarios[i].nome, usuarios[i].cpf);
             }
         }
         printf("\n\nAcima estao as pessoas cadastrados\nPressione qualquer tecla para voltar ao menu principal\n");
@@ -399,18 +436,21 @@ void listarUsuarios(struct usuario *usuarios, int usuariosCadastrados){
     }
 }
 
-    // Funcoes relacionadas aos Filmes
-int inserirFilme(struct filme *filmes, int filmesCadastrados){
+// Funcoes relacionadas aos Filmes
+int inserirFilme(struct filme *filmes, int filmesCadastrados)
+{
     int inseriu = 0, i;
 
-    for ( i = 0; i < max; i++)
+    for (i = 0; i < max; i++)
     {
-        if(filmes[i].numCatalogo == 0){
-            printf("\nNumero de Catalogo: %d\n", (filmesCadastrados+1));
-            filmes[i].numCatalogo = filmesCadastrados+1;
+        if (filmes[i].numCatalogo == 0)
+        {
+            printf("\nNumero de Catalogo: %d\n", (filmesCadastrados + 1));
+            filmes[i].numCatalogo = filmesCadastrados + 1;
             printf("Titulo do Filme: ");
             fflush(stdin);
-            while (getchar() != '\n');
+            while (getchar() != '\n')
+                ;
             gets(filmes[i].titulo);
             printf("Genero do Filme: ");
             fflush(stdin);
@@ -422,7 +462,8 @@ int inserirFilme(struct filme *filmes, int filmesCadastrados){
         }
     }
 
-    if(!inseriu){
+    if (!inseriu)
+    {
         printf("\nBanco de Filmes Cheio.");
         getchar();
     }
@@ -430,96 +471,112 @@ int inserirFilme(struct filme *filmes, int filmesCadastrados){
     return inseriu;
 }
 
-void editarFilme(struct filme *filmes, char titulo[]){
-    int i, editado=0, encontrado=0;
+void editarFilme(struct filme *filmes, char titulo[])
+{
+    int i, editado = 0, encontrado = 0;
     char confirma;
 
-    for ( i = 0; i < max; i++)
+    for (i = 0; i < max; i++)
     {
-        if(strcmp(titulo, filmes[i].titulo) == 0){
+        if (strcmp(titulo, filmes[i].titulo) == 0)
+        {
             printf("\n----------------------------------");
             printf("\nNumero de Catalogo: %d\nNome do Filme: %s\nGenero: %s\nAno: %d\n\n",
-            filmes[i].numCatalogo, filmes[i].titulo, filmes[i].genero, filmes[i].ano);
-	        printf("Este e o filme que deseja editar? [s/n]");
-	        scanf("%c", &confirma);
-	        if (confirma == 's'){
-	            encontrado = 1;
-		        break;
-	        }
+                   filmes[i].numCatalogo, filmes[i].titulo, filmes[i].genero, filmes[i].ano);
+            printf("Este e o filme que deseja editar? [s/n]");
+            scanf("%c", &confirma);
+            if (confirma == 's')
+            {
+                encontrado = 1;
+                break;
+            }
         }
     }
 
-    if(encontrado == 1){
+    if (encontrado == 1)
+    {
         printf("\nTitulo do Filme: ");
         fflush(stdin);
-        while (getchar() != '\n');
+        while (getchar() != '\n')
+            ;
         gets(filmes[i].titulo);
         printf("Genero do Filme: ");
         fflush(stdin);
         gets(filmes[i].genero);
         printf("Ano do Filme: ");
         scanf("%d", &filmes[i].ano);
-        editado=1;
+        editado = 1;
     }
-    if(!encontrado) printf("\nNao foram encontrados filmes com este titulo!");
+    if (!encontrado)
+        printf("\nNao foram encontrados filmes com este titulo!");
 
-    if(editado) printf("\nFilme editado com sucesso!");
-    else printf("\nHouve um erro que nem os programadores entenderam!");
+    if (editado)
+        printf("\nFilme editado com sucesso!");
+    else
+        printf("\nHouve um erro que nem os programadores entenderam!");
 
-//    sleep(800);    por que esse timer existe? Sei lá.
+    //    sleep(800);    por que esse timer existe? Sei lá.
 }
 
-void excluirFilme(struct filme *filmes, int numCatalogo){
-    int i, excluido=0;
+void excluirFilme(struct filme *filmes, int numCatalogo)
+{
+    int i, excluido = 0;
 
-    for ( i = 0; i < max; i++)
+    for (i = 0; i < max; i++)
     {
-        if(filmes[i].numCatalogo == numCatalogo){
-            filmes[i].numCatalogo = 0 ;
-            filmes[i].ano = 0 ;
+        if (filmes[i].numCatalogo == numCatalogo)
+        {
+            filmes[i].numCatalogo = 0;
+            filmes[i].ano = 0;
             strcpy(filmes[i].titulo, "Nao Cadastrado!");
             strcpy(filmes[i].genero, "Nao Cadastrado!");
-            excluido=1;
+            excluido = 1;
         }
     }
 
-    if(excluido) printf("\nExcluido com Sucesso!");
-    else printf("\nFilme nao encontrado");
+    if (excluido)
+        printf("\nExcluido com Sucesso!");
+    else
+        printf("\nFilme nao encontrado");
 }
 
-void listarFilmes(struct filme *filmes, int filmesCadastrados){
+void listarFilmes(struct filme *filmes, int filmesCadastrados)
+{
     int i;
 
-    if(!filmesCadastrados){
+    if (!filmesCadastrados)
+    {
         printf("\nNenhum Filme Cadastrado.");
-    }else{
-        for ( i = 0; i < max; i++)
+    }
+    else
+    {
+        for (i = 0; i < max; i++)
         {
-                if(filmes[i].numCatalogo != 0){
-                    printf("\n----------------------------------");
-                    printf("\nNumero de Catalogo: %d\nNome do Filme: %s\nGenero: %s\nAno: %d",
-                                    filmes[i].numCatalogo, filmes[i].titulo, filmes[i].genero, filmes[i].ano);
+            if (filmes[i].numCatalogo != 0)
+            {
+                printf("\n----------------------------------");
+                printf("\nNumero de Catalogo: %d\nNome do Filme: %s\nGenero: %s\nAno: %d",
+                       filmes[i].numCatalogo, filmes[i].titulo, filmes[i].genero, filmes[i].ano);
             }
         }
-	printf("\n\nAcima estao os filmes cadastrados\nPressione qualquer tecla para voltar ao menu principal\n");
-	getchar();
+        printf("\n\nAcima estao os filmes cadastrados\nPressione qualquer tecla para voltar ao menu principal\n");
+        getchar();
     }
 }
 
-
-    // Funcoes relacionadas a Locacao
-void listarFilmesDisponiveis(){
-
+// Funcoes relacionadas a Locacao
+void listarFilmesDisponiveis()
+{
 }
 
-void listarFilmesLocados(){
-
-} 
-
-void locarFilme(){
-
+void listarFilmesLocados()
+{
 }
 
-void devolverFilme(){
+void locarFilme()
+{
+}
 
+void devolverFilme()
+{
 }
